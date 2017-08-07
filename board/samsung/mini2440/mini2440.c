@@ -23,9 +23,14 @@ DECLARE_GLOBAL_DATA_PTR;
 #define M_PDIV	0x4
 #define M_SDIV	0x1
 #elif (FCLK_SPEED == 1)		/* Fout = 202.8MHz */
+/*
 #define M_MDIV	0xA1
 #define M_PDIV	0x3
 #define M_SDIV	0x1
+*/
+#define M_MDIV   92
+#define M_PDIV    1
+#define M_SDIV    1
 #endif
 
 #define USB_CLOCK 1
@@ -35,9 +40,14 @@ DECLARE_GLOBAL_DATA_PTR;
 #define U_M_PDIV	0x3
 #define U_M_SDIV	0x1
 #elif (USB_CLOCK == 1)
+/*
 #define U_M_MDIV	0x48
 #define U_M_PDIV	0x3
 #define U_M_SDIV	0x2
+*/
+#define U_M_MDIV	56
+#define U_M_PDIV	2
+#define U_M_SDIV	2
 #endif
 
 static inline void pll_delay(unsigned long loops)
@@ -56,7 +66,19 @@ int board_early_init_f(void)
 	struct s3c24x0_clock_power * const clk_power =
 					s3c24x0_get_base_clock_power();
 	struct s3c24x0_gpio * const gpio = s3c24x0_get_base_gpio();
+    // hgqian add
+    __asm__(  "mrc p15, 0, r1, c1, c0, 0\n"
+                /* read ctrl register */
 
+                "orr r1, r1, #0xc0000000\n"
+                /* Asynchronous */
+
+                "mcr p15, 0, r1, c1, c0, 0\n"
+                /* write ctrl register */
+
+                :::"r1"
+        );
+    
 	/* to reduce PLL lock time, adjust the LOCKTIME register */
 	writel(0xFFFFFF, &clk_power->locktime);
 

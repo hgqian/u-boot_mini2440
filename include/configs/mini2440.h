@@ -18,8 +18,13 @@
  * (easy to change)
  */
 #define CONFIG_S3C24X0		/* This is a SAMSUNG S3C24x0-type SoC */
+#if 0
 #define CONFIG_S3C2410		/* specifically a SAMSUNG S3C2410 SoC */
 #define CONFIG_SMDK2410		/* on a SAMSUNG SMDK2410 Board */
+#else
+#define CONFIG_S3C2440
+#define CONFIG_MINI2440
+#endif
 
 #define CONFIG_SYS_TEXT_BASE	0x0
 
