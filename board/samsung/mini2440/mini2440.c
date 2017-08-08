@@ -141,8 +141,15 @@ int dram_init(void)
 int board_eth_init(bd_t *bis)
 {
 	int rc = 0;
+#if 0
 #ifdef CONFIG_CS8900
 	rc = cs8900_initialize(0, CONFIG_CS8900_BASE);
+#endif
+#else
+#ifdef CONFIG_DRIVER_DM9000  
+    //print("init eth control!\n");
+    rc= dm9000_initialize(bis);
+#endif
 #endif
 	return rc;
 }

@@ -40,9 +40,19 @@
 /*
  * Hardware drivers
  */
+#if 0
 #define CONFIG_CS8900		/* we have a CS8900 on-board */
 #define CONFIG_CS8900_BASE	0x19000300
 #define CONFIG_CS8900_BUS16	/* the Linux driver does accesses as shorts */
+#else
+#define CONFIG_DRIVER_DM9000
+#define CONFIG_DM9000_NO_SROM                           //not use the dm9000 eeprom
+#define CONFIG_NET_RANDOM_ETHADDR                       //set the ethaddr
+#define CONFIG_LIB_RAND                                 //random_ethadd need rand function
+#define CONFIG_DM9000_BASE      0x20000300
+#define DM9000_IO               CONFIG_DM9000_BASE      
+#define DM9000_DATA             (CONFIG_DM9000_BASE + 4 ) //data address*/
+#endif
 
 /*
  * select serial console configuration
@@ -86,9 +96,15 @@
 #define CONFIG_BOOT_RETRY_TIME	-1
 #define CONFIG_RESET_TO_RETRY
 
+#if 0
 #define CONFIG_NETMASK		255.255.255.0
 #define CONFIG_IPADDR		10.0.0.110
 #define CONFIG_SERVERIP		10.0.0.1
+#else
+#define CONFIG_NETMASK          255.255.255.0 
+#define CONFIG_IPADDR           10.123.223.252         // arm board ip
+#define CONFIG_SERVERIP         10.123.223.139         // pc ip  
+#endif
 
 #if defined(CONFIG_CMD_KGDB)
 #define CONFIG_KGDB_BAUDRATE	115200	/* speed to run kgdb serial port */
@@ -129,16 +145,24 @@
 /*-----------------------------------------------------------------------
  * FLASH and environment organization
  */
+#define CONFIG_SYS_CFI_FLASH_CONFIG_REGS    {0xFFFF}
 
 #define CONFIG_SYS_FLASH_CFI
 #define CONFIG_FLASH_CFI_DRIVER
+#if 0
 #define CONFIG_FLASH_CFI_LEGACY
+#endif
 #define CONFIG_SYS_FLASH_LEGACY_512Kx16
 #define CONFIG_FLASH_SHOW_PROGRESS	45
 
 #define CONFIG_SYS_MAX_FLASH_BANKS	1
 #define CONFIG_SYS_FLASH_BANKS_LIST     { CONFIG_SYS_FLASH_BASE }
-#define CONFIG_SYS_MAX_FLASH_SECT	(19)
+
+#ifdef CONFIG_MINI2440
+#define CONFIG_SYS_MAX_FLASH_SECT	(35)
+#else
+#define CONFIG_SYS_MAX_FLASH_SET 	(19)
+#endif
 
 #define CONFIG_ENV_ADDR			(CONFIG_SYS_FLASH_BASE + 0x070000)
 #define CONFIG_ENV_IS_IN_FLASH
@@ -164,6 +188,9 @@
 #define CONFIG_SYS_MAX_NAND_DEVICE	1
 #define CONFIG_SYS_NAND_BASE		0x4E000000
 #endif
+
+#define CONFIG_SYS_NAND_ECCSIZE     2048
+#define CONFIG_SYS_NAND_ECCBYTES    4
 
 /*
  * File system

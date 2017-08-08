@@ -146,7 +146,7 @@ config TARGET_SMDK2410
 	select CPU_ARM920T
 	
 config TARGET_MINI2440
-	bool "Support mini2410"
+	bool "Support mini2440"
 	select CPU_ARM920T
 
 config TARGET_ASPENITE

@@ -10,7 +10,7 @@
 #include <nand.h>
 #include <asm/arch/s3c24x0_cpu.h>
 #include <asm/io.h>
-
+#if 0
 #define S3C2410_NFCONF_EN          (1<<15)
 #define S3C2410_NFCONF_512BYTE     (1<<14)
 #define S3C2410_NFCONF_4STEP       (1<<13)
@@ -173,3 +173,4 @@ int board_nand_init(struct nand_chip *nand)
 
 	return 0;
 }
+#endif
